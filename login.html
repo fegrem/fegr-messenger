@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Fegr Messenger</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --bg-color: #f8f9fa;
+            --card-bg: #fff;
+            --text-color: #333;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .login-container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            transition: background-color 0.2s;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            position: relative;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+            position: relative;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .hidden {
+            display: none !important;
+            box-sizing: border-box;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">Fegr Messenger</div>
+        
+        <!-- Login Form -->
+        <div id="loginForm">
+            <h2 style="margin-bottom: 1.5rem; text-align: center;">Вход</h2>
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="Введите ваш email">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Пароль</label>
+                <input type="password" id="loginPassword" placeholder="Введите ваш пароль">
+            </div>
+            <button class="btn" onclick="handleLogin()">Войти</button>
+            <div class="switch-form" onclick="switchToRegister()">Нет аккаунта? Зарегистрироваться</div>
+            <div id="loginError" class="error hidden"></div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="hidden">
+            <h2 style="margin-bottom: 1.5rem; text-align: center;">Регистрация</h2>
+            <div class="form-group">
+                <label for="registerName">Полное имя</label>
+                <input type="text" id="registerName" placeholder="Введите ваше полное имя">
+            </div>
+            <div class="form-group">
+                <label for="registerNickname">Никнейм</label>
+                <input type="text" id="registerNickname" placeholder="Выберите уникальный никнейм">
+            </div>
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" placeholder="Введите ваш email">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Пароль</label>
+                <input type="password" id="registerPassword" placeholder="Придумайте пароль">
+            </div>
+            <button class="btn" onclick="handleRegister()">Зарегистрироваться</button>
+            <div class="switch-form" onclick="switchToLogin()">Уже есть аккаунт? Войти</div>
+            <div id="registerError" class="error hidden"></div>
+        </div>
+
+        <!-- Verification Form -->
+        <div id="verificationForm" class="hidden">
+            <h2 style="margin-bottom: 1.5rem; text-align: center;">Подтверждение email</h2>
+            <p style="text-align: center; margin-bottom: 1.5rem; color: #666;">На ваш email отправлен 6-значный код подтверждения</p>
+            <div class="form-group">
+                <label for="verificationCode">Код подтверждения</label>
+                <input type="text" id="verificationCode" placeholder="Введите 6-значный код">
+            </div>
+            <button class="btn" onclick="handleVerify()">Подтвердить</button>
+            <button class="btn btn-secondary" onclick="handleResendCode()">Отправить код повторно</button>
+            <div class="switch-form" onclick="switchToRegister()">Вернуться к регистрации</div>
+            <div id="verificationError" class="error hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        function switchToRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('registerError').classList.add('hidden');
+        }
+
+        function switchToLogin() {
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('registerError').classList.add('hidden');
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (!email || !password) {
+                showError(errorDiv, 'Пожалуйста, заполните все поля');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Сохраняем токен в localStorage для долгосрочного хранения
+                    localStorage.setItem('token', data.token);
+                    // Также сохраняем информацию о пользователе
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = '/';
+                } else {
+                    showError(errorDiv, data.error);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError(errorDiv, 'Произошла ошибка. Пожалуйста, попробуйте снова.');
+            }
+        }
+
+        async function handleRegister() {
+            const name = document.getElementById('registerName').value;
+            const nickname = document.getElementById('registerNickname').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorDiv = document.getElementById('registerError');
+
+            if (!name || !nickname || !email || !password) {
+                showError(errorDiv, 'Пожалуйста, заполните все поля');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError(errorDiv, 'Пароль должен быть не менее 6 символов');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, name, nickname })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store user ID for verification
+                    localStorage.setItem('pendingUserId', data.userId);
+                    switchToVerification();
+                } else {
+                    showError(errorDiv, data.error);
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                showError(errorDiv, 'Произошла ошибка. Пожалуйста, попробуйте снова.');
+            }
+        }
+
+        function switchToVerification() {
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('verificationForm').classList.remove('hidden');
+            document.getElementById('verificationError').classList.add('hidden');
+        }
+
+        function switchToRegister() {
+            document.getElementById('verificationForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('verificationError').classList.add('hidden');
+        }
+
+        async function handleVerify() {
+            const code = document.getElementById('verificationCode').value;
+            const errorDiv = document.getElementById('verificationError');
+            const userId = localStorage.getItem('pendingUserId');
+
+            if (!code) {
+                showError(errorDiv, 'Пожалуйста, введите код подтверждения');
+                return;
+            }
+
+            if (code.length !== 6) {
+                showError(errorDiv, 'Код должен состоять из 6 цифр');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, code })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.removeItem('pendingUserId');
+                    window.location.href = '/';
+                } else {
+                    showError(errorDiv, data.error);
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                showError(errorDiv, 'Произошла ошибка. Пожалуйста, попробуйте снова.');
+            }
+        }
+
+        async function handleResendCode() {
+            const errorDiv = document.getElementById('verificationError');
+            const userId = localStorage.getItem('pendingUserId');
+
+            if (!userId) {
+                showError(errorDiv, 'Сначала завершите регистрацию');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/resend-verification`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Код подтверждения отправлен на ваш email');
+                } else {
+                    showError(errorDiv, data.error);
+                }
+            } catch (error) {
+                console.error('Resend error:', error);
+                showError(errorDiv, 'Произошла ошибка. Пожалуйста, попробуйте снова.');
+            }
+        }
+
+        function showError(element, message) {
+            element.textContent = message;
+            element.classList.remove('hidden');
+        }
+
+        // Go to profile
+        function goToProfile() {
+            window.location.href = 'profile.html';
+        }
+    </script>
+</body>
+</html>

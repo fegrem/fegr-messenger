@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - Fegr Messenger</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-color: #f0f2f5;
+            --text-color: #1c1e21;
+            --card-bg: #ffffff;
+            --border-color: #e4e6ea;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .user-header:hover {
+            opacity: 0.8;
+        }
+
+        .user-avatar-header {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .user-header:hover .user-avatar-header {
+            transform: scale(1.05);
+        }
+
+        .user-info-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name-header {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-nickname-header {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Profile Section */
+        .profile-container {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .profile-avatar-section {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .profile-avatar-large {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+        }
+
+        .profile-avatar-upload {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .profile-avatar-upload:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-avatar-input {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+        }
+
+        .profile-info-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .profile-header-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .profile-nickname {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 3rem;
+            font-weight: bold;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background-color: #5a6fd8;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #6a4180;
+        }
+
+        /* Posts Section */
+        .posts-section {
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .posts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .post {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .post:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .post-header {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .post-content {
+            padding: 1rem;
+        }
+
+        .post-actions {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .post-media {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-stats {
+                gap: 2rem;
+            }
+
+            .profile-form {
+                grid-template-columns: 1fr;
+            }
+
+            .posts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="user-header" onclick="goToMain()">
+            <div class="user-avatar-header" id="userAvatarHeader">
+                <span id="userAvatarText">G</span>
+            </div>
+            <div class="user-info-header">
+                <div class="user-name-header" id="userNameHeader">Гость</div>
+                <div class="user-nickname-header" id="userNicknameHeader">Не авторизован</div>
+            </div>
+        </div>
+        <div class="logo">Fegr Messenger</div>
+        <div class="user-actions">
+            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="content">
+            <div class="content-header">
+                <h2>Профиль пользователя</h2>
+            </div>
+            
+            <div class="profile-container">
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <div class="profile-avatar-section">
+                        <img id="profileAvatarLarge" src="" alt="Avatar" class="profile-avatar-large">
+                        <label for="profileAvatarInput" class="profile-avatar-upload">+</label>
+                        <input type="file" id="profileAvatarInput" accept="image/*" class="profile-avatar-input">
+                    </div>
+                    
+                    <div class="profile-info-section">
+                        <div class="profile-header-info">
+                            <h1 id="profileNameDisplay" class="profile-name">Имя пользователя</h1>
+                            <p id="profileNicknameDisplay" class="profile-nickname">@никнейм</p>
+                        </div>
+                        
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span id="profilePostsCount" class="stat-number">0</span>
+                                <span class="stat-label">Постов</span>
+                            </div>
+                            <div class="stat-item">
+                                <span id="profileFollowersCount" class="stat-number">0</span>
+                                <span class="stat-label">Подписчиков</span>
+                            </div>
+                            <div class="stat-item">
+                                <span id="profileFollowingCount" class="stat-number">0</span>
+                                <span class="stat-label">Подписок</span>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-form">
+                            <div class="form-group">
+                                <label>Имя</label>
+                                <input type="text" id="profileName" placeholder="Ваше имя">
+                            </div>
+                            <div class="form-group">
+                                <label>Никнейм</label>
+                                <input type="text" id="profileNickname" placeholder="Ваш никнейм">
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button class="btn" id="saveProfileBtn">Сохранить профиль</button>
+                            <button class="btn btn-secondary" id="cancelBtn">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts Section -->
+                <div class="posts-section">
+                    <h3 class="section-title">Ваши посты</h3>
+                    <div id="userPostsContainer" class="posts-container">
+                        <!-- Posts will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // App State
+        const state = {
+            user: null,
+            token: localStorage.getItem('token'),
+            currentView: 'profile'
+        };
+
+        // API Configuration
+        const API_BASE = 'http://localhost:5000/api';
+
+        // DOM Elements
+        const elements = {
+            userAvatarHeader: document.getElementById('userAvatarHeader'),
+            userAvatarText: document.getElementById('userAvatarText'),
+            userNameHeader: document.getElementById('userNameHeader'),
+            userNicknameHeader: document.getElementById('userNicknameHeader'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            profileAvatarLarge: document.getElementById('profileAvatarLarge'),
+            profileAvatarInput: document.getElementById('profileAvatarInput'),
+            profileNameDisplay: document.getElementById('profileNameDisplay'),
+            profileNicknameDisplay: document.getElementById('profileNicknameDisplay'),
+            profileName: document.getElementById('profileName'),
+            profileNickname: document.getElementById('profileNickname'),
+            profilePostsCount: document.getElementById('profilePostsCount'),
+            profileFollowersCount: document.getElementById('profileFollowersCount'),
+            profileFollowingCount: document.getElementById('profileFollowingCount'),
+            saveProfileBtn: document.getElementById('saveProfileBtn'),
+            cancelBtn: document.getElementById('cancelBtn'),
+            userPostsContainer: document.getElementById('userPostsContainer')
+        };
+
+        // Initialize App
+        function init() {
+            if (!state.token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadUser();
+            setupEventListeners();
+            loadProfile();
+        }
+
+        // Authentication
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Data Loading
+        async function loadUser() {
+            try {
+                const response = await fetch(`${API_BASE}/users/profile`, {
+                    headers: { 'Authorization': `Bearer ${state.token}` }
+                });
+                state.user = await response.json();
+                updateUserUI();
+            } catch (error) {
+                console.error('Error loading user:', error);
+            }
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/users/profile`, {
+                    headers: { 'Authorization': `Bearer ${state.token}` }
+                });
+                const user = await response.json();
+                
+                // Update profile display
+                elements.profileNameDisplay.textContent = user.name;
+                elements.profileNicknameDisplay.textContent = `@${user.nickname}`;
+                elements.profileName.value = user.name;
+                elements.profileNickname.value = user.nickname;
+                
+                // Update avatar
+                if (user.avatar) {
+                    elements.profileAvatarLarge.src = `http://localhost:5000/uploads/${user.avatar}`;
+                } else {
+                    elements.profileAvatarLarge.src = '';
+                    elements.profileAvatarLarge.style.background = 'var(--primary-color)';
+                    elements.profileAvatarLarge.style.color = 'white';
+                    elements.profileAvatarLarge.style.display = 'flex';
+                    elements.profileAvatarLarge.style.alignItems = 'center';
+                    elements.profileAvatarLarge.style.justifyContent = 'center';
+                    elements.profileAvatarLarge.textContent = user.name.charAt(0).toUpperCase();
+                }
+                
+                // Load stats and posts
+                await loadProfileStats();
+                await loadUserPosts();
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        async function loadProfileStats() {
+            try {
+                const response = await fetch(`${API_BASE}/users/profile/stats`, {
+                    headers: { 'Authorization': `Bearer ${state.token}` }
+                });
+                const stats = await response.json();
+                
+                elements.profilePostsCount.textContent = stats.postsCount || 0;
+                elements.profileFollowersCount.textContent = stats.followersCount || 0;
+                elements.profileFollowingCount.textContent = stats.followingCount || 0;
+            } catch (error) {
+                console.error('Error loading profile stats:', error);
+            }
+        }
+
+        async function loadUserPosts() {
+            try {
+                const response = await fetch(`${API_BASE}/posts/user`, {
+                    headers: { 'Authorization': `Bearer ${state.token}` }
+                });
+                const posts = await response.json();
+                renderUserPosts(posts);
+            } catch (error) {
+                console.error('Error loading user posts:', error);
+            }
+        }
+
+        // Rendering
+        function updateUserUI() {
+            if (state.user) {
+                // Update header profile
+                elements.userNameHeader.textContent = state.user.name;
+                elements.userNicknameHeader.textContent = `@${state.user.nickname}`;
+                if (state.user.avatar) {
+                    elements.userAvatarHeader.style.backgroundImage = `url(http://localhost:5000/uploads/${state.user.avatar})`;
+                    elements.userAvatarText.textContent = '';
+                    elements.userAvatarHeader.style.backgroundSize = 'cover';
+                    elements.userAvatarHeader.style.backgroundPosition = 'center';
+                } else {
+                    elements.userAvatarHeader.style.backgroundImage = 'none';
+                    elements.userAvatarText.textContent = state.user.name.charAt(0).toUpperCase();
+                    elements.userAvatarHeader.style.backgroundSize = '';
+                    elements.userAvatarHeader.style.backgroundPosition = '';
+                }
+
+                elements.logoutBtn.textContent = 'Logout';
+                elements.logoutBtn.classList.remove('btn-secondary');
+                elements.logoutBtn.classList.add('btn');
+                elements.logoutBtn.onclick = logout;
+            } else {
+                // Update header profile
+                elements.userNameHeader.textContent = 'Гость';
+                elements.userNicknameHeader.textContent = 'Не авторизован';
+                elements.userAvatarHeader.style.backgroundImage = 'none';
+                elements.userAvatarText.textContent = 'G';
+                elements.userAvatarHeader.style.backgroundSize = '';
+                elements.userAvatarHeader.style.backgroundPosition = '';
+
+                elements.logoutBtn.textContent = 'Авторизоваться';
+                elements.logoutBtn.classList.remove('btn');
+                elements.logoutBtn.classList.add('btn-secondary');
+                elements.logoutBtn.onclick = () => window.location.href = 'login.html';
+            }
+        }
+
+        function renderUserPosts(posts) {
+            elements.userPostsContainer.innerHTML = '';
+            if (posts.length === 0) {
+                elements.userPostsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--text-color); width: 100%;">
+                        <h3 style="margin-bottom: 1rem;">У вас пока нет постов</h3>
+                        <p>Создайте первый пост, чтобы поделиться своими мыслями!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            posts.forEach(post => {
+                const postEl = document.createElement('div');
+                postEl.className = 'post';
+                postEl.innerHTML = `
+                    <div class="post-header">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="avatar" style="background-color: var(--primary-color);">${post.user.name.charAt(0)}</div>
+                            <div>
+                                <div><strong>${post.user.name}</strong></div>
+                                <div style="font-size: 0.8rem; color: #666;">@${post.user.nickname}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        ${post.content ? `<p>${post.content}</p>` : ''}
+                        ${post.media ? `<img src="http://localhost:5000/uploads/${post.media}" class="post-media" alt="Post media">` : ''}
+                    </div>
+                    <div class="post-actions">
+                        <button class="btn" onclick="likePost('${post._id}')">Нравится (${post.likes.length})</button>
+                        <button class="btn btn-secondary" onclick="showComments('${post._id}')">Комментарии</button>
+                    </div>
+                `;
+                elements.userPostsContainer.appendChild(postEl);
+            });
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Logout
+            elements.logoutBtn.addEventListener('click', logout);
+
+            // Profile
+            elements.saveProfileBtn.addEventListener('click', saveProfile);
+            elements.cancelBtn.addEventListener('click', () => {
+                loadProfile(); // Reload original data
+            });
+
+            // Avatar upload
+            elements.profileAvatarInput.addEventListener('change', handleAvatarUpload);
+        }
+
+        // Actions
+        // Функция перехода на главную страницу
+        function goToMain() {
+            window.location.href = '/';
+        }
+
+        async function handleAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            try {
+                const response = await fetch(`${API_BASE}/users/profile`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${state.token}` },
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    state.user = data.user;
+                    updateUserUI();
+                    loadProfile();
+                    alert('Аватар успешно обновлен!');
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аватара:', error);
+            }
+        }
+
+        async function saveProfile() {
+            const formData = new FormData();
+            formData.append('name', elements.profileName.value);
+            formData.append('nickname', elements.profileNickname.value);
+            if (elements.profileAvatarInput.files[0]) {
+                formData.append('avatar', elements.profileAvatarInput.files[0]);
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/users/profile`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${state.token}` },
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    state.user = data.user;
+                    updateUserUI();
+                    alert('Профиль успешно обновлен!');
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Ошибка сохранения профиля:', error);
+            }
+        }
+
+        // Global functions for onclick events
+        window.likePost = async (postId) => {
+            try {
+                const response = await fetch(`${API_BASE}/posts/${postId}/like`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${state.token}` }
+                });
+                
+                if (response.ok) {
+                    loadUserPosts();
+                } else {
+                    alert('Ошибка при добавлении лайка');
+                }
+            } catch (error) {
+                console.error('Ошибка при добавлении лайка:', error);
+            }
+        };
+
+        window.showComments = (postId) => {
+            alert('Функция комментариев скоро появится!');
+        };
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
