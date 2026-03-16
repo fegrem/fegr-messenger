@@ -1,0 +1,73 @@
+{
+  "name": "fegr-messenger",
+  "description": "Messenger application with real-time chat and posts",
+  "env": {
+    "NODE_ENV": {
+      "value": "production",
+      "description": "Node.js environment"
+    },
+    "PORT": {
+      "value": "5000",
+      "description": "Port for the application"
+    },
+    "JWT_SECRET": {
+      "required": true,
+      "description": "JWT secret key for authentication"
+    },
+    "SMTP_HOST": {
+      "value": "smtp.gmail.com",
+      "description": "SMTP host for email verification"
+    },
+    "SMTP_PORT": {
+      "value": "587",
+      "description": "SMTP port"
+    },
+    "SMTP_USER": {
+      "required": true,
+      "description": "SMTP username for email verification"
+    },
+    "SMTP_PASS": {
+      "required": true,
+      "description": "SMTP password for email verification"
+    }
+  },
+  "services": [
+    {
+      "name": "fegr-messenger",
+      "source": ".",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "build": {
+        "command": "npm install"
+      },
+      "start": {
+        "command": "npm start"
+      },
+      "healthcheck": {
+        "path": "/",
+        "interval": 60,
+        "timeout": 30,
+        "retries": 3
+      }
+    }
+  ],
+  "databases": [
+    {
+      "name": "mongodb",
+      "type": "mongodb",
+      "version": "5.0"
+    }
+  ],
+  "domains": [
+    {
+      "domain": "fegrem.ru",
+      "service": "fegr-messenger"
+    },
+    {
+      "domain": "www.fegrem.ru",
+      "service": "fegr-messenger",
+      "redirect": "fegrem.ru"
+    }
+  ]
+}
